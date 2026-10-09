@@ -1,0 +1,3 @@
+Flask  #framework ligero para crear aplicaciones web en Python, te permite manejar rutas, plantillas, formularios, etc.
+pyinstaller #Genera el ejecutable .exe permite tambien que el usuario no tenga que instalar python
+
