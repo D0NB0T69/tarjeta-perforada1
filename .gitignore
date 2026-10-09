@@ -1,0 +1,16 @@
+#ign entorno virtual de python, evita que se suban archivos inesesarios
+venv/
+
+#ign archivos de cache que python genera automaticamente
+__pycache__/
+
+#ign carpetas que se generan a partir de las herramientas de pyinstaller que se usan para empaquetar
+build/
+dist/
+
+#ign archivos de configuracion de pyinstaller
+*.spec
+
+
+#todo esto evita que se suban archivos que se genaran autmaticamente,
+#mantiene el repositorio limpio 
