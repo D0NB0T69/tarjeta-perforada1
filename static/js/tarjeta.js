@@ -2,58 +2,53 @@
 const FILAS = ["12", "11", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const NUMERO_COLUMNAS = 80;
 
-// Elementos de la pagina
 const entradaTexto = document.getElementById("entradaTexto");
-const contenedorTarjeta = document.getElementById("tarjeta");
+const tarjeta = document.getElementById("tarjeta");
 
-// Crea la tarjeta vacia: 80 columnas con 12 posiciones cada una
+// Construye la tarjeta completa: numeros, etiquetas y 80 columnas de agujeros
 function crearTarjeta() {
-  contenedorTarjeta.innerHTML = "";
+  // Fila de numeros de columna (1 a 80)
+  let numeros = '<div class="numeros"><span class="espacio"></span>';
+  for (let n = 1; n <= NUMERO_COLUMNAS; n++) {
+    numeros += `<span>${n}</span>`;
+  }
+  numeros += "</div>";
 
-  for (let indiceColumna = 0; indiceColumna < NUMERO_COLUMNAS; indiceColumna++) {
-    const columna = document.createElement("div");
-    columna.className = "columna";
+  // Etiquetas de filas (12, 11, 0 a 9)
+  let etiquetas = '<div class="etiquetas">';
+  for (const fila of FILAS) {
+    etiquetas += `<span>${fila}</span>`;
+  }
+  etiquetas += "</div>";
 
+  // 80 columnas, cada una con 12 agujeros
+  let columnas = '<div class="zona-columnas">';
+  for (let i = 0; i < NUMERO_COLUMNAS; i++) {
+    columnas += '<div class="columna">';
     for (const fila of FILAS) {
-      const agujero = document.createElement("div");
-      agujero.className = "agujero";
-      agujero.dataset.fila = fila;
-      columna.appendChild(agujero);
+      columnas += `<div class="agujero" data-fila="${fila}"></div>`;
     }
-
-    contenedorTarjeta.appendChild(columna);
+    columnas += "</div>";
   }
+  columnas += "</div>";
+
+  tarjeta.innerHTML = numeros + '<div class="cuerpo">' + etiquetas + columnas + "</div>";
 }
 
-// Quita todas las perforaciones y marcas de error
-function limpiarTarjeta() {
-  for (const columna of contenedorTarjeta.children) {
-    columna.classList.remove("error");
-    for (const agujero of columna.children) {
-      agujero.classList.remove("perforado");
-    }
-  }
-}
+// Perfora la tarjeta con la respuesta del servidor
+function dibujarColumnas(columnasRespuesta) {
+  const columnas = document.querySelectorAll(".columna");
 
-// Dibuja las perforaciones con la respuesta del servidor
-function dibujarColumnas(columnas) {
-  limpiarTarjeta();
+  columnas.forEach((columna, i) => {
+    // Si no hay dato para esta columna, queda vacia
+    const datos = columnasRespuesta[i];
+    const filas = datos ? datos.filas : [];
+    const error = datos ? datos.error : false;
 
-  columnas.forEach(function (datosColumna, indice) {
-    const columna = contenedorTarjeta.children[indice];
-
-    // Si el caracter no tiene codigo, la columna se marca con error
-    if (datosColumna.error) {
-      columna.classList.add("error");
-      return;
-    }
-
-    // Se perforan solo las filas que indico el servidor
-    for (const agujero of columna.children) {
-      if (datosColumna.filas.includes(agujero.dataset.fila)) {
-        agujero.classList.add("perforado");
-      }
-    }
+    columna.classList.toggle("error", error);
+    columna.querySelectorAll(".agujero").forEach(agujero => {
+      agujero.classList.toggle("perforado", filas.includes(agujero.dataset.fila));
+    });
   });
 }
 
@@ -64,21 +59,18 @@ async function pedirPerforacion(texto) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ texto: texto })
   });
-
   const datos = await respuesta.json();
 
-  if (!respuesta.ok) {
-    console.error("Error del servidor:", datos.error);
-    return;
+  if (respuesta.ok) {
+    dibujarColumnas(datos.columnas);
+  } else {
+    console.error(datos.error);
   }
-
-  dibujarColumnas(datos.columnas);
 }
 
 // Cada vez que el usuario escribe, se pide la nueva perforacion
-entradaTexto.addEventListener("input", function () {
-  pedirPerforacion(entradaTexto.value);
-});
+entradaTexto.addEventListener("input", () => pedirPerforacion(entradaTexto.value));
 
 // Al cargar la pagina se crea la tarjeta vacia
 crearTarjeta();
+dibujarColumnas([]);
