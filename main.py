@@ -34,7 +34,12 @@ if __name__ == "__main__":
     # Abre la pagina (el cliente) en el navegador predeterminado
     webbrowser.open(f"http://{HOST}:{PUERTO}")
 
-    print("Simulador en ejecucion. Cierre esta ventana para detenerlo.")
+    print("Simulador en ejecucion. Presione Ctrl+C para detenerlo.")
 
-    # Mantiene el programa abierto mientras el servidor atiende peticiones
-    hilo_servidor.join()
+    try:
+        # Mantiene el programa abierto; a diferencia de join(), Ctrl+C si lo detiene
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        # Cierra el programa de forma ordenada al pulsar Ctrl+C
+        print("Programa detenido.")
