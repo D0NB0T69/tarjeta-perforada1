@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de tarjeta perforada IBM 029</title>
+  <!-- Carga los estilos desde la carpeta static -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+  <h1>Simulador de tarjeta perforada IBM 029 (80 columnas)</h1>
+
+  <!-- Caja donde el usuario escribe el texto -->
+  <label for="entradaTexto">Texto (maximo 80 caracteres):</label>
+  <input type="text" id="entradaTexto" maxlength="80">
+
+  <!-- Contenedor de la tarjeta; se llena desde tarjeta.js -->
+  <div class="contenedor-tarjeta">
+    <div id="tarjeta" class="tarjeta"></div>
+  </div>
+
+  <!-- Carga el codigo del cliente -->
+  <script src="{{ url_for('static', filename='js/tarjeta.js') }}"></script>
+</body>
+</html>
