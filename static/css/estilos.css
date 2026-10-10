@@ -14,15 +14,59 @@ body {
 
 /* La tarjeta: color cartulina y bordes */
 .tarjeta {
-  display: flex;
   width: max-content;
   background: #f5ecd0;
   border: 2px solid #b8a878;
   border-radius: 6px;
-  padding: 10px 6px;
+  padding: 6px;
 }
 
-/* Una columna de la tarjeta (12 posiciones de agujeros) */
+/* Fila de numeros de columna */
+.numeros {
+  display: flex;
+}
+
+.numeros span {
+  width: 14px;
+  margin: 0 1px;
+  font-size: 9px;
+  text-align: center;
+}
+
+/* Espacio vacio a la izquierda, del ancho de las etiquetas */
+.numeros .espacio {
+  width: 30px;
+  flex-shrink: 0;
+}
+
+/* Cuerpo: etiquetas y columnas lado a lado */
+.cuerpo {
+  display: flex;
+}
+
+/* Etiquetas de filas (12, 11, 0 a 9) */
+.etiquetas {
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  flex-shrink: 0;
+}
+
+.etiquetas span {
+  height: 14px;
+  line-height: 14px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 4px;
+}
+
+/* Zona de las 80 columnas */
+.zona-columnas {
+  display: flex;
+}
+
+/* Una columna de la tarjeta (12 posiciones) */
 .columna {
   display: flex;
   flex-direction: column;
@@ -45,7 +89,7 @@ body {
   background: #222;
 }
 
-/* Columna con caracter sin codigo: se muestra un signo de exclamacion rojo */
+/* Columna con caracter sin codigo: signo de exclamacion rojo */
 .columna.error::after {
   content: "!";
   color: red;
