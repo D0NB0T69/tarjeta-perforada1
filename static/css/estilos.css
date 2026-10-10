@@ -1,0 +1,53 @@
+/* Estilos generales de la pagina */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: #f0f0f0;
+}
+
+/* Permite desplazarse a los lados en pantallas pequenas */
+.contenedor-tarjeta {
+  overflow-x: auto;
+  margin-top: 20px;
+  padding-bottom: 10px;
+}
+
+/* La tarjeta: color cartulina y bordes */
+.tarjeta {
+  display: flex;
+  width: max-content;
+  background: #f5ecd0;
+  border: 2px solid #b8a878;
+  border-radius: 6px;
+  padding: 10px 6px;
+}
+
+/* Una columna de la tarjeta (12 posiciones de agujeros) */
+.columna {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 14px;
+  margin: 0 1px;
+}
+
+/* Posicion donde puede haber un agujero */
+.agujero {
+  width: 8px;
+  height: 10px;
+  margin: 2px 0;
+  border-radius: 2px;
+  background: #e3d6a8;
+}
+
+/* Agujero perforado: se ve oscuro */
+.agujero.perforado {
+  background: #222;
+}
+
+/* Columna con caracter sin codigo: se muestra un signo de exclamacion rojo */
+.columna.error::after {
+  content: "!";
+  color: red;
+  font-weight: bold;
+}
